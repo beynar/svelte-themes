@@ -104,10 +104,9 @@ Adding dark mode support takes 2 lines of code:
 
 ## Using the theme
 
-Svelte-themes exports a themeStore as its default so you can access the theme props anywhere in you app.
+Svelte-themes exports a `themeStore` as its default so you can access the theme props anywhere in you app.
+
 Svelte-themes also export a `setTheme` function so you can easily switch the theme.
-p
-That's it, your Next.js app fully supports dark mode, including System preference with `prefers-color-scheme`. The theme is also immediately synced between tabs. By default, next-themes modifies the `data-theme` attribute on the `html` element, which you can easily use to style your app:
 
 ```tsx
 import themeStore, { setTheme } from 'svelte-themes';

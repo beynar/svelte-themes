@@ -1,6 +1,6 @@
 {
 	"name": "svelte-themes",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"repository": "https://github.com/beynar/svelte-themes",
 	"homepage": "https://github.com/beynar/svelte-themes",
 	"scripts": {
