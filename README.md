@@ -16,7 +16,7 @@ An abstraction for themes in your SvelteKit.js app.
 - ✅ Class or data attribute selector
 - ✅ Theme store
 
-Check out the [Live Example](https://next-themes-example.vercel.app/) to try it for yourself.
+Check out the [Live Example](https://svelte-themes.vercel.app) to try it for yourself.
 
 ## Install
 
