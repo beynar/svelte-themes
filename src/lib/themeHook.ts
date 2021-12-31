@@ -53,10 +53,3 @@ export const handleThemeScript = async ({ request, resolve }) => {
 	if (request.pathname && request.pathname.startWith('/api')) return response;
 	return injectThemeScript(response);
 };
-
-export async function handle({ request, resolve }) {
-	const response = await resolve(request);
-	response = myCustomLogic(response);
-
-	return injectThemeScript(response);
-}
