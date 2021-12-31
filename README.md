@@ -1,6 +1,6 @@
-<p class="callout info">This library is a port of next-themes for SvelteKit. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-theme](https://github.com/pacocoursey/next-themes/) [contributors](https://github.com/pacocoursey/next-themes/graphs/contributors).</p>
+This library is a port of next-themes for SvelteKit. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-theme](https://github.com/pacocoursey/next-themes/) [contributors](https://github.com/pacocoursey/next-themes/graphs/contributors)
 
-This lib is still in development, PR are welcome.
+This library is still in development, PR are welcome.
 
 # svelte-themes ![svelte-themes minzip package size](https://img.shields.io/bundlephobia/minzip/svelte-themes) ![Version](https://img.shields.io/npm/v/svelte-themes.svg?colorB=green)
 
