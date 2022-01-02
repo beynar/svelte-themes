@@ -14,7 +14,7 @@ specifiers:
   svelte: ^3.44.0
   svelte-check: ^2.2.6
   svelte-preprocess: ^4.9.4
-  svelte-themes: ^0.0.7
+  svelte-themes: ^0.0.8
   svelte2tsx: ^0.4.12
   tslib: ^2.3.1
   typescript: ^4.5.4
@@ -33,7 +33,7 @@ devDependencies:
   svelte: 3.44.3
   svelte-check: 2.2.11_svelte@3.44.3
   svelte-preprocess: 4.10.1_svelte@3.44.3+typescript@4.5.4
-  svelte-themes: 0.0.7
+  svelte-themes: 0.0.8
   svelte2tsx: 0.4.12_svelte@3.44.3+typescript@4.5.4
   tslib: 2.3.1
   typescript: 4.5.4
@@ -1599,8 +1599,8 @@ packages:
       typescript: 4.5.4
     dev: true
 
-  /svelte-themes/0.0.7:
-    resolution: {integrity: sha512-FvMCugZuIewoUa1jiyRVKc2Lp3b23EmPynbtcCkCHCieYqbmA0Y9tgV6+IUOYBW+XG+aHUDQtOof9Un3/hW26Q==}
+  /svelte-themes/0.0.8:
+    resolution: {integrity: sha512-SEnFApuiSsfQmoF/PU80X3xtdkBFsn/NCE4ZfgWzzs25bEd+i/9+Kjh/q1CNHMkDm4ef13v4y4aSY32PquBkJg==}
     dev: true
 
   /svelte/3.44.3:

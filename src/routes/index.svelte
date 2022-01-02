@@ -1,8 +1,5 @@
 <script>
 	import themeStore, { setTheme } from 'svelte-themes';
-	$: {
-		console.log($themeStore);
-	}
 </script>
 
 <div>
@@ -38,6 +35,9 @@
 		display: flex;
 
 		justify-content: space-between;
+	}
+	button {
+		margin-top: 10px;
 	}
 	a {
 		color: inherit;
