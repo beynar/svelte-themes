@@ -1,10 +1,18 @@
-import themeConfig from '$lib/themeConfig';
+import defaultThemeConfig from '$lib/defaultThemeConfig';
 import { MEDIA } from '$lib/constants';
 
 export const injectThemeScript = (response) => {
 	if (!response.body) return response;
-	const { attribute, defaultTheme, themes, value, forcedTheme, storageKey, enableSystem } =
-		themeConfig;
+	const {
+		attribute = defaultThemeConfig.attribute,
+		defaultTheme = defaultThemeConfig.defaultTheme,
+		themes = defaultThemeConfig.themes,
+		value,
+		forcedTheme = defaultThemeConfig.forcedTheme,
+		storageKey = defaultThemeConfig.storageKey,
+		enableSystem = defaultThemeConfig.enableSystem
+	} = themeConfig || defaultThemeConfig;
+
 	const attrs = !value ? themes : Object.values(value);
 	const defaultSystem = defaultTheme === 'system';
 	const optimization =
@@ -40,7 +48,6 @@ export const injectThemeScript = (response) => {
 			  }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(defaultTheme)};}}catch(t){}}();`
 	}</script>\n`;
 
-	console.log('<head>\n'.length);
 	const headIndex = response.body.indexOf('<head>\n');
 	if (headIndex === -1) return response;
 	response.body =

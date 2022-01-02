@@ -2,24 +2,24 @@
 	import { browser } from '$app/env';
 	import { colorSchemes, MEDIA } from './constants';
 	import { disableAnimation, getSystemTheme, getTheme } from './helpers';
-	import themeStore, { setTheme } from '.';
+	import themeStore, { setTheme } from './index';
 	const updateThemeStore = (update) => themeStore.update((store) => ({ ...store, ...update }));
-	import themeConfig from '$lib/themeConfig';
+	import defaultThemeConfig from '$lib/defaultThemeConfig';
 
 	const {
-		themes,
-		forcedTheme,
-		enableSystem,
-		disableTransitionOnChange,
-		enableColorScheme,
-		storageKey,
-		defaultTheme,
-		attribute,
-		value
-	} = themeConfig;
+		attribute = defaultThemeConfig.attribute,
+		defaultTheme = defaultThemeConfig.defaultTheme,
+		themes = defaultThemeConfig.themes,
+		value,
+		enableColorScheme = defaultThemeConfig.enableColorScheme,
+		disableTransitionOnChange = defaultThemeConfig.disableTransitionOnChange,
+		forcedTheme = defaultThemeConfig.forcedTheme,
+		storageKey = defaultThemeConfig.storageKey,
+		enableSystem = defaultThemeConfig.enableSystem
+	} = themeConfig || defaultThemeConfig;
 
 	const initialTheme = getTheme(storageKey, defaultTheme);
-
+	console.log({ initialTheme });
 	themeStore.set({
 		theme: initialTheme,
 		forcedTheme,
@@ -27,6 +27,9 @@
 		themes: enableSystem ? [...themes, 'system'] : themes,
 		systemTheme: (enableSystem ? getTheme(storageKey) : undefined) as 'light' | 'dark' | undefined
 	});
+	$: {
+		console.log($themeStore);
+	}
 
 	$: theme = $themeStore.theme;
 	$: resolvedTheme = $themeStore.resolvedTheme;
@@ -113,13 +116,15 @@
 	}
 
 	$: {
-		const newTheme = $themeStore.theme;
+		console.log({ theme, forcedTheme });
 		if (forcedTheme) {
-			changeTheme(newTheme, true, false);
+			changeTheme($themeStore.theme, true, false);
 		} else {
-			changeTheme(newTheme);
+			console.log({ theme });
+			changeTheme($themeStore.theme);
 		}
 	}
+	console.log({ theme });
 </script>
 
 <svelte:window use:onWindow />

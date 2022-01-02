@@ -14,6 +14,7 @@ specifiers:
   svelte: ^3.44.0
   svelte-check: ^2.2.6
   svelte-preprocess: ^4.9.4
+  svelte-themes: ^0.0.6
   svelte2tsx: ^0.4.12
   tslib: ^2.3.1
   typescript: ^4.5.4
@@ -32,6 +33,7 @@ devDependencies:
   svelte: 3.44.3
   svelte-check: 2.2.11_svelte@3.44.3
   svelte-preprocess: 4.10.1_svelte@3.44.3+typescript@4.5.4
+  svelte-themes: 0.0.6
   svelte2tsx: 0.4.12_svelte@3.44.3+typescript@4.5.4
   tslib: 2.3.1
   typescript: 4.5.4
@@ -1595,6 +1597,10 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.44.3
       typescript: 4.5.4
+    dev: true
+
+  /svelte-themes/0.0.6:
+    resolution: {integrity: sha512-8kBG1xMbZ4Oj5eR+GxyZrMDhSh9i0rTk2dbvx9adkOxW3loQh0coAziG+DcZec1/p11067e80deWCytnYWWiTg==}
     dev: true
 
   /svelte/3.44.3:

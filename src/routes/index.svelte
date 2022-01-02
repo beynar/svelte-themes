@@ -1,5 +1,8 @@
 <script>
-	import themeStore, { setTheme } from '$lib/index';
+	import themeStore from '$lib/index';
+	$: {
+		console.log($themeStore);
+	}
 </script>
 
 <div>

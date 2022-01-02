@@ -1,6 +1,6 @@
-This library is a port of next-themes for SvelteKit. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-theme](https://github.com/pacocoursey/next-themes/) [contributors](https://github.com/pacocoursey/next-themes/graphs/contributors)
+This library is a port of [next-theme](https://github.com/pacocoursey/next-themes/) for SvelteKit. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-themes contributors](https://github.com/pacocoursey/next-themes/graphs/contributors)
 
-This library is still in development, PR are welcome.
+While usable, this library is still in its early phase, PR are welcome.
 
 # svelte-themes ![svelte-themes minzip package size](https://img.shields.io/bundlephobia/minzip/svelte-themes) ![Version](https://img.shields.io/npm/v/svelte-themes.svg?colorB=green)
 
@@ -12,7 +12,7 @@ An abstraction for themes in your SvelteKit.js app.
 - ✅ No flash on load (both SSR and SSG)
 - ✅ Sync theme across tabs and windows
 - ✅ Disable flashing when changing themes
-- ? Force pages to specific themes
+- ❓ Force pages to specific themes
 - ✅ Class or data attribute selector
 - ✅ Theme store
 
@@ -28,45 +28,56 @@ $ npm install svelte-themes
 $ yarn add svelte-themes
 ```
 
-## Use
+## Using svelte-themes
 
 In order to use svelte-themes you will need:
 
-- a `lib/themeConfig.ts` file where your config will be defined
-- to tweek [SvelteKit `handle hook`](https://kit.svelte.dev/docs#hooks-handle) in order to avoid the flashing theme sync.
+- to define a global `themeConfig` variable inside your `svelte.config.js` under [`vite.define.themeConfig`](https://vitejs.dev/config/#define),
+- to tweek [SvelteKit `handle hook`](https://kit.svelte.dev/docs#hooks-handle) in order to avoid the flashing theme sync,
 - Add SvelteTheme to your [`__layout component`](https://kit.svelte.dev/docs#layouts).
 
-### The config file
+### The config object
 
 ```js
-// lib/themeConfig.ts
-export default {
-	/** List of all available theme names */
-	forcedTheme: undefined,
-	// /** Forced theme name for the current page */
-	disableTransitionOnChange: false,
-	// /** Whether to switch between dark and light themes based on prefers-color-scheme */
-	enableSystem: true,
-	// /** Disable all CSS transitions when switching themes */
-	enableColorScheme: true,
-	// /** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
-	storageKey: 'theme',
-	// /** Key used to store theme setting in localStorage */
-	themes: ['light', 'dark', 'system'],
-	// /** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
-	defaultTheme: 'light',
-	// /** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
-	attribute: 'data-theme',
-	// /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
-	value: undefined
+// svelte.config.js
+const config = {
+kit: {
+...
+		vite: {
+            ...
+			define: {
+                ...
+				themeConfig: {
+					forcedTheme: undefined,
+					// /** Forced theme name for the current page */
+					disableTransitionOnChange: false,
+					// /** Whether to switch between dark and light themes based on prefers-color-scheme */
+					enableSystem: true,
+					// /** Disable all CSS transitions when switching themes */
+					enableColorScheme: true,
+					// /** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
+					storageKey: 'theme',
+					// /** Key used to store theme setting in localStorage */
+					themes: ['light', 'dark'],
+					// /** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
+					defaultTheme: 'light',
+					// /** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
+					attribute: 'data-theme'
+					// /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
+					// value: undefined
+				}
+			}
+		}
+	}
 };
+...
 ```
 
 ### The hook
 
-You can simply export the handle function as the handleThemeScript exported from svelte-themes/themeHook.
+You can simply export an handle function as the handleThemeScript exported from svelte-themes/themeHook.
 
-```js
+```ts
 // lib/hooks.ts
 import { handleThemeScript } from 'svelte-themes/themeHook';
 
@@ -75,7 +86,7 @@ export const handle = handleThemeScript;
 
 or use the `injectThemeScript` on the response object if you already have a custom logic defined in you handle hook.
 
-```js
+```ts
 // lib/hooks.ts
 import { injectThemeScript } from 'svelte-themes/themeHook';
 
@@ -93,6 +104,7 @@ Adding dark mode support takes 2 lines of code:
 
 ```tsx
 // pages/__layout.svelte
+
 <script>
 	import SvelteTheme from 'svelte-themes/SvelteTheme.svelte';
 </script>
@@ -102,7 +114,7 @@ Adding dark mode support takes 2 lines of code:
 
 ```
 
-## Using the theme
+## Reading and updating the theme
 
 Svelte-themes exports a `themeStore` as its default so you can access the theme props anywhere in you app.
 
