@@ -1,8 +1,17 @@
 {
 	"name": "svelte-themes",
-	"version": "0.0.8",
+	"version": "0.0.85",
 	"repository": "https://github.com/beynar/svelte-themes",
 	"homepage": "https://github.com/beynar/svelte-themes",
+	"license": "MIT",
+	"keywords": [
+		"theme",
+		"dark-theme",
+		"themes",
+		"dark-mode",
+		"sveltejs",
+		"sveltekit"
+	],
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
