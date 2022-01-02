@@ -14,7 +14,7 @@ specifiers:
   svelte: ^3.44.0
   svelte-check: ^2.2.6
   svelte-preprocess: ^4.9.4
-  svelte-themes: ^0.0.6
+  svelte-themes: ^0.0.7
   svelte2tsx: ^0.4.12
   tslib: ^2.3.1
   typescript: ^4.5.4
@@ -22,7 +22,7 @@ specifiers:
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.7
   '@sveltejs/adapter-vercel': 1.0.0-next.0
-  '@sveltejs/kit': 1.0.0-next.211_svelte@3.44.3
+  '@sveltejs/kit': 1.0.0-next.212_svelte@3.44.3
   '@typescript-eslint/eslint-plugin': 4.33.0_3289a875d95a672b97ebf589745c66ef
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.5.4
   eslint: 7.32.0
@@ -33,7 +33,7 @@ devDependencies:
   svelte: 3.44.3
   svelte-check: 2.2.11_svelte@3.44.3
   svelte-preprocess: 4.10.1_svelte@3.44.3+typescript@4.5.4
-  svelte-themes: 0.0.6
+  svelte-themes: 0.0.7
   svelte2tsx: 0.4.12_svelte@3.44.3+typescript@4.5.4
   tslib: 2.3.1
   typescript: 4.5.4
@@ -157,8 +157,8 @@ packages:
       esbuild: 0.13.15
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.211_svelte@3.44.3:
-    resolution: {integrity: sha512-jS28R40H6BypK5rSVUzNmQW3NaBTFijj4fJPEtx8YeSLuzqm7ZGl3wwqF+FRxisP6oyz2GkYSARRxzemDOfn9A==}
+  /@sveltejs/kit/1.0.0-next.212_svelte@3.44.3:
+    resolution: {integrity: sha512-hjpk/Rqrl6hhNf1Qsx6EDvL3Cm9JvmvW/Z1FRYVhGg1xin/JQkPgFzTU27NBSYhtK1t4buLmlO1tqdMvurs9Fg==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -1599,8 +1599,8 @@ packages:
       typescript: 4.5.4
     dev: true
 
-  /svelte-themes/0.0.6:
-    resolution: {integrity: sha512-8kBG1xMbZ4Oj5eR+GxyZrMDhSh9i0rTk2dbvx9adkOxW3loQh0coAziG+DcZec1/p11067e80deWCytnYWWiTg==}
+  /svelte-themes/0.0.7:
+    resolution: {integrity: sha512-FvMCugZuIewoUa1jiyRVKc2Lp3b23EmPynbtcCkCHCieYqbmA0Y9tgV6+IUOYBW+XG+aHUDQtOof9Un3/hW26Q==}
     dev: true
 
   /svelte/3.44.3:

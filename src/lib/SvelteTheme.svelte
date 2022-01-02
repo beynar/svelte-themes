@@ -19,7 +19,7 @@
 	} = themeConfig || defaultThemeConfig;
 
 	const initialTheme = getTheme(storageKey, defaultTheme);
-	console.log({ initialTheme });
+
 	themeStore.set({
 		theme: initialTheme,
 		forcedTheme,
@@ -27,9 +27,6 @@
 		themes: enableSystem ? [...themes, 'system'] : themes,
 		systemTheme: (enableSystem ? getTheme(storageKey) : undefined) as 'light' | 'dark' | undefined
 	});
-	$: {
-		console.log($themeStore);
-	}
 
 	$: theme = $themeStore.theme;
 	$: resolvedTheme = $themeStore.resolvedTheme;
@@ -116,15 +113,12 @@
 	}
 
 	$: {
-		console.log({ theme, forcedTheme });
 		if (forcedTheme) {
 			changeTheme($themeStore.theme, true, false);
 		} else {
-			console.log({ theme });
 			changeTheme($themeStore.theme);
 		}
 	}
-	console.log({ theme });
 </script>
 
 <svelte:window use:onWindow />

@@ -1,5 +1,5 @@
 <script>
-	import themeStore from '$lib/index';
+	import themeStore, { setTheme } from 'svelte-themes';
 	$: {
 		console.log($themeStore);
 	}
@@ -11,7 +11,8 @@
 		><option value="dark">Dark</option><option value="light">Light</option><option value="system"
 			>System</option
 		></select
-	><br /><br />
+	>
+	<button on:click={() => setTheme('dark')}> dark </button>
 	<!-- <div>
 		<a href="/dark">Forced Dark Page</a>
 		<a href="/light">Forced Light Page</a>

@@ -9,7 +9,7 @@ An abstraction for themes in your SvelteKit.js app.
 - ✅ Perfect dark mode in 2 lines of code
 - ✅ System setting with prefers-color-scheme
 - ✅ Themed browser UI with color-scheme
-- ✅ No flash on load (both SSR and SSG)
+- ✅ No flash on load
 - ✅ Sync theme across tabs and windows
 - ✅ Disable flashing when changing themes
 - ❓ Force pages to specific themes
@@ -34,7 +34,7 @@ In order to use svelte-themes you will need:
 
 - to define a global `themeConfig` variable inside your `svelte.config.js` under [`vite.define.themeConfig`](https://vitejs.dev/config/#define),
 - to tweek [SvelteKit `handle hook`](https://kit.svelte.dev/docs#hooks-handle) in order to avoid the flashing theme sync,
-- Add SvelteTheme to your [`__layout component`](https://kit.svelte.dev/docs#layouts).
+- to add `SvelteTheme` inside your [`__layout component`](https://kit.svelte.dev/docs#layouts).
 
 ### The config object
 
@@ -64,7 +64,7 @@ kit: {
 					// /** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
 					attribute: 'data-theme'
 					// /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
-					// value: undefined
+					value: undefined
 				}
 			}
 		}
@@ -100,7 +100,7 @@ export async function handle({ request, resolve }) {
 
 ### The layout
 
-Adding dark mode support takes 2 lines of code:
+Just import SvelteTheme and put it anywhere on your \_\_layout.
 
 ```tsx
 // pages/__layout.svelte
@@ -116,12 +116,22 @@ Adding dark mode support takes 2 lines of code:
 
 ## Reading and updating the theme
 
-Svelte-themes exports a `themeStore` as its default so you can access the theme props anywhere in you app.
+Svelte-themes exports a `themeStore` writable store as its default so you can access the theme props anywhere in you app.
 
 Svelte-themes also export a `setTheme` function so you can easily switch the theme.
 
 ```tsx
+<script>
 import themeStore, { setTheme } from 'svelte-themes';
+<script/>
+
+<select bind:value={$themeStore.theme}>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="system">System</option>
+</select>
+
+<button on:click={() => setTheme('dark')}> Dark mode </button>
 ...
 ```
 
