@@ -1,5 +1,5 @@
 <script>
-	import themeStore, { setTheme } from 'svelte-themes';
+	import themeStore, { setTheme } from '$lib/index';
 </script>
 
 <div>

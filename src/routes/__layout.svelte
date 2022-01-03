@@ -1,5 +1,5 @@
 <script>
-	import SvelteTheme from 'svelte-themes/SvelteTheme.svelte';
+	import SvelteTheme from '$lib/SvelteTheme.svelte';
 </script>
 
 <SvelteTheme />

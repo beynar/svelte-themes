@@ -1,6 +1,6 @@
 import { MEDIA } from './constants';
 
-export const getTheme = (key: string, fallback?: string) => {
+export const getTheme = (key: string, fallback?: string): string | undefined => {
 	if (typeof window === 'undefined') return undefined;
 	let theme;
 	try {
@@ -31,7 +31,7 @@ export const disableAnimation = () => {
 	};
 };
 
-export const getSystemTheme = (e?: MediaQueryList) => {
+export const getSystemTheme = (e?: MediaQueryList): string => {
 	if (!e) {
 		e = window.matchMedia(MEDIA);
 	}

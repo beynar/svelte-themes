@@ -1,6 +1,6 @@
 {
 	"name": "svelte-themes",
-	"version": "0.0.85",
+	"version": "0.0.9",
 	"repository": "https://github.com/beynar/svelte-themes",
 	"homepage": "https://github.com/beynar/svelte-themes",
 	"license": "MIT",
@@ -13,7 +13,7 @@
 		"sveltekit"
 	],
 	"scripts": {
-		"dev": "svelte-kit dev",
+		"dev": "svelte-kit dev --port=9090",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
