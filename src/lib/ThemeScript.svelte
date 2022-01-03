@@ -9,6 +9,8 @@
 	export let value: { [themeName: string]: string };
 	export let attrs: any;
 
+	// These are minified via Terser and then updated by hand, don't recommend
+
 	const updateDOM = (name: string, literal?: boolean) => {
 		name = value?.[name] || name;
 		const val = literal ? name : `'${name}'`;
@@ -21,6 +23,7 @@
 	};
 
 	$: defaultSystem = defaultTheme === 'system';
+	// Code-golfing the amount of characters in the script
 	$: optimization =
 		attribute === 'class'
 			? `var d=document.documentElement.classList;${`d.remove(${attrs
@@ -28,7 +31,8 @@
 					.join(',')})`};`
 			: `var d=document.documentElement;`;
 
-	$: scriptTag = `<${'script'}>${
+	// Encapsulate script tag into string to not mess with the compiler
+	$: themeScript = `<${'script'}>${
 		forcedTheme
 			? `!function(){${optimization}${updateDOM(forcedTheme)}}()`
 			: enableSystem
@@ -46,5 +50,5 @@
 </script>
 
 <svelte:head>
-	{@html scriptTag}
+	{@html themeScript}
 </svelte:head>

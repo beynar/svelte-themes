@@ -16,5 +16,11 @@ export interface ThemeStore {
 
 export const setTheme = (theme: string): void =>
 	themeStore.update((store) => ({ ...store, theme }));
-const themeStore = writable<ThemeStore>();
+const themeStore = writable<ThemeStore>({
+	themes: [],
+	forcedTheme: undefined,
+	theme: undefined,
+	resolvedTheme: undefined,
+	systemTheme: undefined
+});
 export default themeStore;

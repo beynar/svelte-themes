@@ -3,7 +3,6 @@
 	import { colorSchemes, MEDIA } from './constants';
 	import { disableAnimation, getSystemTheme, getTheme } from './helpers';
 	import themeStore, { setTheme } from './index';
-	const updateThemeStore = (update) => themeStore.update((store) => ({ ...store, ...update }));
 
 	import ThemeScript from './ThemeScript.svelte';
 	/** Forced theme name for the current page */
@@ -17,7 +16,7 @@
 	/** Key used to store theme setting in localStorage */
 	export let storageKey: string = 'theme';
 	/** List of all available theme names */
-	export let themes: string[] = ['light', 'dark'];
+	export let themes: string[] = enableSystem ? ['light', 'dark', 'system'] : ['light', 'dark'];
 	/** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
 	export let defaultTheme: string = enableSystem ? 'system' : 'light';
 	/** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
@@ -44,7 +43,8 @@
 
 	const handleMediaQuery = (e?) => {
 		const systemTheme = getSystemTheme(e);
-		updateThemeStore({ resolvedTheme: systemTheme });
+		$themeStore.resolvedTheme = systemTheme;
+
 		if (theme === 'system' && !forcedTheme) changeTheme(systemTheme, false);
 	};
 
@@ -116,6 +116,7 @@
 				theme === 'system'
 				? resolvedTheme || null
 				: null;
+
 		// color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
 		// if color-scheme is null, this will remove the property
 		document.documentElement.style.setProperty('color-scheme', colorScheme);

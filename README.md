@@ -6,13 +6,13 @@ While usable, this library is still in its early phase, PR are welcome.
 
 An abstraction for themes in your SvelteKit.js app.
 
-- ✅ Perfect dark mode in 1 lines of code
+- ✅ Perfect dark mode in 1 line of code
 - ✅ System setting with prefers-color-scheme
 - ✅ Themed browser UI with color-scheme
 - ✅ No flash on load
 - ✅ Sync theme across tabs and windows
 - ✅ Disable flashing when changing themes
-- ❓ Force pages to specific themes
+- ✅ Force pages to specific themes
 - ✅ Class or data attribute selector
 - ✅ Theme store
 
@@ -46,7 +46,7 @@ In order to use svelte-themes you will need to add `SvelteTheme` inside your [`_
 ### Props
 
 - `storageKey = 'theme'`: Key used to store theme setting in localStorage
-- `defaultTheme = 'system'`: Default theme name (for v0.0.12 and lower the default was `light`). If `enableSystem` is false, the default theme is `light`
+- `defaultTheme = 'system'`: Default theme name. If `enableSystem` is false, the default theme is `light`
 - `forcedTheme`: Forced theme name for the current page (does not modify saved theme settings)
 - `enableSystem = true`: Whether to switch between `dark` and `light` based on `prefers-color-scheme`
 - `enableColorScheme = true`: Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons
