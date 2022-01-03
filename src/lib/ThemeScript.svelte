@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
 	import { MEDIA } from './constants';
 
 	export let forcedTheme: string;
@@ -29,7 +28,7 @@
 					.join(',')})`};`
 			: `var d=document.documentElement;`;
 
-	$: scriptTag = `${
+	$: scriptTag = `<${'script'}>${
 		forcedTheme
 			? `!function(){${optimization}${updateDOM(forcedTheme)}}()`
 			: enableSystem
@@ -43,22 +42,9 @@
 			: `!function(){try{${optimization}var e=localStorage.getItem("${storageKey}");if(e){${
 					value ? `var x=${JSON.stringify(value)};` : ''
 			  }${updateDOM(value ? 'x[e]' : 'e', true)}}else{${updateDOM(defaultTheme)};}}catch(t){}}();`
-	}`;
-
-	const scriptStore = writable(scriptTag);
-	$: {
-		scriptStore.set(scriptTag);
-	}
+	}</${'script'}>`;
 </script>
 
 <svelte:head>
-	<!--
-	Aweful trick to inject the script at the right time 😂
-	We would rather do something like the following but the @html doesn't work with script tag.
-	<script>
 	{@html scriptTag}
-	</script>
-	Also, we can't use an action to set innerHtml because it runs too late and causes a flash
--->
-	<script bind:innerHTML={$scriptStore} contenteditable="true"></script>
 </svelte:head>
