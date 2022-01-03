@@ -4,8 +4,7 @@
 
 <div>
 	<h1>Svelte-themes example</h1>
-	<p>resolvedTheme: {$themeStore.resolvedTheme}</p>
-	<p>theme: {$themeStore.theme}</p>
+
 	<select bind:value={$themeStore.theme}
 		><option value="dark">Dark</option><option value="light">Light</option><option value="system"
 			>System</option

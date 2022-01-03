@@ -6,7 +6,7 @@ While usable, this library is still in its early phase, PR are welcome.
 
 An abstraction for themes in your SvelteKit.js app.
 
-- ✅ Perfect dark mode in 1 line of code
+- ✅ Perfect dark mode in 2 lines of code
 - ✅ System setting with prefers-color-scheme
 - ✅ Themed browser UI with color-scheme
 - ✅ No flash on load
