@@ -13,8 +13,8 @@
 		"sveltekit"
 	],
 	"scripts": {
-		"dev": "svelte-kit dev --port=9090",
-		"build": "svelte-kit build",
+		"dev": "vite dev",
+		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
