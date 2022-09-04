@@ -13,7 +13,7 @@
 		"sveltekit"
 	],
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --port 9000",
 		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
