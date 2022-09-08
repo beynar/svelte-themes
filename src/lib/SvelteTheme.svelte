@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { colorSchemes, MEDIA } from './constants';
 	import { disableAnimation, getSystemTheme, getTheme } from './helpers';
 	import themeStore, { setTheme } from './index';
