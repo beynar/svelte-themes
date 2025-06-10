@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { colorSchemes, MEDIA } from './constants';
 	import { disableAnimation, getSystemTheme, getTheme } from './helpers';
 	import themeStore, { setTheme } from './index';
@@ -24,7 +24,7 @@
 	/** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
 	export let value: {
 		[themeName: string]: string;
-	} = undefined;
+	} | undefined = undefined;
 
 	const initialTheme = getTheme(storageKey, defaultTheme);
 
@@ -41,14 +41,17 @@
 
 	const attrs = !value ? themes : Object.values(value);
 
-	const handleMediaQuery = (e?) => {
+	const handleMediaQuery = (e?: MediaQueryList) => {
 		const systemTheme = getSystemTheme(e);
 		$themeStore.resolvedTheme = systemTheme;
 
-		if (theme === 'system' && !forcedTheme) changeTheme(systemTheme, false);
+		// Only apply system theme if no forcedTheme is present (matches next-themes)
+		if (theme === 'system' && enableSystem && !forcedTheme) {
+			changeTheme(systemTheme, false);
+		}
 	};
 
-	const changeTheme = (theme, updateStorage = true, updateDOM = true) => {
+	const changeTheme = (theme: string, updateStorage = true, updateDOM = true) => {
 		let name = value?.[theme] || theme;
 
 		const enable = disableTransitionOnChange && updateDOM ? disableAnimation() : null;
@@ -87,7 +90,7 @@
 		setTheme(e.newValue || defaultTheme);
 	};
 
-	const onWindow = (window) => {
+	const onWindow = (window: Window) => {
 		// Always listen to System preference
 		const media = window.matchMedia(MEDIA);
 		// Intentionally use deprecated listener methods to support iOS & old browsers
@@ -123,10 +126,12 @@
 	}
 
 	$: {
-		if (forcedTheme) {
-			changeTheme(theme, true, false);
-		} else {
-			changeTheme(theme);
+		// Apply forcedTheme if present, otherwise use the normal theme
+		// This matches next-themes: applyTheme(forcedTheme ?? theme)
+		const themeToApply = forcedTheme || theme;
+		if (themeToApply) {
+			const updateStorage = !forcedTheme; // Don't save forced themes to localStorage
+			changeTheme(themeToApply, updateStorage, true);
 		}
 	}
 </script>

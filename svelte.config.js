@@ -1,25 +1,14 @@
 import adapter from '@sveltejs/adapter-auto';
-import preprocess from 'svelte-preprocess';
-import path from 'path';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
+	// Consult https://svelte.dev/docs#compile-time-svelte-preprocess
 	// for more information about preprocessors
-	preprocess: preprocess(),
+	preprocess: vitePreprocess(),
 
 	kit: {
-		vite: {
-			resolve: {
-				alias: {
-					$components: path.resolve('./src/components')
-				}
-			}
-		},
-		adapter: adapter(),
-
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
+		adapter: adapter()
 	}
 };
 

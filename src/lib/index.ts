@@ -1,5 +1,8 @@
 import { writable } from 'svelte/store';
 
+// Export the main component
+export { default as SvelteTheme } from './SvelteTheme.svelte';
+
 export interface ThemeStore {
 	/** List of all available theme names */
 	themes: string[];
