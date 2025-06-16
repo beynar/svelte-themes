@@ -30,13 +30,13 @@ $ yarn add svelte-themes
 
 ## Using svelte-themes
 
-In order to use svelte-themes you will need to add `SvelteTheme` inside your [`__layout component`](https://kit.svelte.dev/docs#layouts).
+In order to use svelte-themes you will need to add `SvelteTheme` inside your [`+layout.svelte` component](https://kit.svelte.dev/docs/routing#layout).
 
-```tsx
-// pages/__layout.svelte
+```svelte
+<!-- src/routes/+layout.svelte -->
 
 <script>
-	import SvelteTheme from 'svelte-themes/SvelteTheme.svelte';
+	import { SvelteTheme } from 'svelte-themes';
 </script>
 
 <SvelteTheme />
@@ -64,18 +64,18 @@ Svelte-themes exports
 - a `theme` writable store as its default so you can access the theme props anywhere in you app
 - `setTheme` function so you can easily switch the theme.
 
-```tsx
+```svelte
 <script>
 import themeStore, { setTheme } from 'svelte-themes';
-<script/>
+</script>
 
 <select bind:value={$themeStore.theme}>
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-        <option value="system">System</option>
+	<option value="dark">Dark</option>
+	<option value="light">Light</option>
+	<option value="system">System</option>
 </select>
 
-<button on:click={() => setTheme('dark')}> Dark mode </button>
+<button on:click={() => setTheme('dark')}>Dark mode</button>
 ```
 
 ### Theme store

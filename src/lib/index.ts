@@ -8,7 +8,6 @@ export interface ThemeStore {
 	themes: string[];
 	/** Forced theme name for the current page */
 	forcedTheme?: string;
-	/** Update the theme */
 	/** Active theme name */
 	theme?: string;
 	/** If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme` */
