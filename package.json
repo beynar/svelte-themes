@@ -1,7 +1,7 @@
 {
 	"name": "svelte-themes",
 	"version": "1.0.0",
-	"description": "An abstraction for themes in your SvelteKit app - port of next-themes for Svelte",
+	"description": "An abstraction for themes in your Svelte app - port of next-themes for Svelte",
 	"type": "module",
 	"keywords": ["svelte", "sveltekit", "themes", "dark-mode", "light-mode", "theme-switching", "next-themes"],
 	"license": "MIT",
@@ -25,8 +25,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0 || ^5.0.0",
-		"@sveltejs/kit": "^2.0.0"
+		"svelte": "^4.0.0 || ^5.0.0"
 	},
 	"scripts": {
 		"analyze": "source-map-explorer .svelte-kit/output/client/_app/immutable/chunks/*.js --html > bundle-analysis.html",
