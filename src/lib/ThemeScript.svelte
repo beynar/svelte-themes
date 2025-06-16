@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { MEDIA } from './constants';
 
-	export let forcedTheme: string;
+	export let forcedTheme: string | undefined;
 	export let storageKey: string;
 	export let attribute: string;
 	export let enableSystem: boolean;
 	export let defaultTheme: string;
-	export let value: { [themeName: string]: string };
+	export let value: { [themeName: string]: string } | undefined;
 	export let attrs: any;
 
 	// These are minified via Terser and then updated by hand, don't recommend
