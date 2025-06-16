@@ -2,7 +2,7 @@
 	// Browser detection - works in any Svelte environment
 	const browser = typeof window !== 'undefined';
 	import { colorSchemes, MEDIA } from './constants';
-	import { disableAnimation, getSystemTheme, getTheme } from './helpers';
+	import { disableAnimation, getSystemTheme, getTheme, setThemeStorage, resolveTheme, getColorScheme, applyThemeToDOM } from './helpers';
 	import themeStore, { setTheme } from './index';
 
 	import ThemeScript from './ThemeScript.svelte';
@@ -42,8 +42,8 @@
 
 	const attrs = !value ? themes : Object.values(value);
 
-	const handleMediaQuery = (e?: MediaQueryList) => {
-		const systemTheme = getSystemTheme(e);
+	const handleMediaQuery = (e?: MediaQueryList | MediaQueryListEvent) => {
+		const systemTheme = getSystemTheme(e as MediaQueryList);
 		$themeStore.resolvedTheme = systemTheme;
 
 		// Only apply system theme if no forcedTheme is present (matches next-themes)
@@ -53,37 +53,20 @@
 	};
 
 	const changeTheme = (theme: string, updateStorage = true, updateDOM = true) => {
-		let name = value?.[theme] || theme;
-
 		const enable = disableTransitionOnChange && updateDOM ? disableAnimation() : null;
 
 		if (updateStorage) {
-			try {
-				localStorage.setItem(storageKey, theme);
-			} catch (e) {
-				// Unsupported
-			}
+			setThemeStorage(storageKey, theme);
 		}
 
-		if (theme === 'system' && enableSystem) {
-			const resolved = getSystemTheme();
-			name = value?.[resolved] || resolved;
-		}
+		const name = resolveTheme(theme, value);
 
 		if (updateDOM && browser) {
-			const d = document.documentElement;
-
-			if (attribute === 'class') {
-				d.classList.remove(...(attrs as string[]));
-				d.classList.add(name);
-			} else {
-				d.setAttribute(attribute, name);
-			}
+			applyThemeToDOM(document.documentElement, attribute, name, attrs as string[]);
 			enable?.();
 		}
 	};
 
-	const mediaHandler = (...args: any) => handleMediaQuery(...args);
 
 	const storageHandler = (e: StorageEvent) => {
 		if (e.key !== storageKey) return;
@@ -95,32 +78,21 @@
 		// Always listen to System preference
 		const media = window.matchMedia(MEDIA);
 		// Intentionally use deprecated listener methods to support iOS & old browsers
-		media.addListener(mediaHandler);
-		mediaHandler(media);
+		media.addListener(handleMediaQuery);
+		handleMediaQuery(media);
 		// localStorage event handling
 		window.addEventListener('storage', storageHandler);
 		return {
 			destroy() {
 				window.removeEventListener('storage', storageHandler);
-				media.removeListener(mediaHandler);
+				media.removeListener(handleMediaQuery);
 			}
 		};
 	};
 
 	// color-scheme handling
 	$: if (enableColorScheme && browser) {
-		let colorScheme =
-			// If theme is forced to light or dark, use that
-			forcedTheme && colorSchemes.includes(forcedTheme)
-				? forcedTheme
-				: // If regular theme is light or dark
-				theme && colorSchemes.includes(theme)
-				? theme
-				: // If theme is system, use the resolved version
-				theme === 'system'
-				? resolvedTheme || null
-				: null;
-
+		const colorScheme = getColorScheme(theme, resolvedTheme, forcedTheme);
 		// color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
 		// if color-scheme is null, this will remove the property
 		document.documentElement.style.setProperty('color-scheme', colorScheme);
