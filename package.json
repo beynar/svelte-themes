@@ -3,7 +3,15 @@
 	"version": "1.0.0",
 	"description": "An abstraction for themes in your Svelte app - port of next-themes for Svelte",
 	"type": "module",
-	"keywords": ["svelte", "sveltekit", "themes", "dark-mode", "light-mode", "theme-switching", "next-themes"],
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"themes",
+		"dark-mode",
+		"light-mode",
+		"theme-switching",
+		"next-themes"
+	],
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -41,19 +49,19 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/adapter-vercel": "^5.7.2",
-		"@sveltejs/kit": "^2.21.3",
+		"@sveltejs/kit": "^2.21.5",
 		"@sveltejs/package": "^2.3.11",
-		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@sveltejs/vite-plugin-svelte": "^5.1.0",
 		"@typescript-eslint/eslint-plugin": "^8.34.0",
 		"@typescript-eslint/parser": "^8.34.0",
-		"eslint": "^9.28.0",
+		"eslint": "^9.29.0",
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-svelte": "^3.9.2",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.4.0",
 		"publint": "^0.3.12",
-		"puppeteer": "^24.10.0",
-		"svelte": "^5.33.18",
+		"puppeteer": "^24.10.1",
+		"svelte": "^5.34.3",
 		"svelte-check": "^4.2.1",
 		"svelte-preprocess": "^6.0.3",
 		"tslib": "^2.8.1",
@@ -62,7 +70,10 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
-			"esbuild"
+			"@parcel/watcher",
+			"@sveltejs/kit",
+			"esbuild",
+			"svelte-preprocess"
 		],
 		"ignoredBuiltDependencies": [
 			"puppeteer"
