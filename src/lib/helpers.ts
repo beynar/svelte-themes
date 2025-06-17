@@ -7,7 +7,7 @@ export const getTheme = (key: string, fallback?: string): string | undefined => 
 	let theme;
 	try {
 		theme = localStorage.getItem(key) || undefined;
-	} catch (e) {
+	} catch {
 		// Unsupported
 	}
 	return theme || fallback;
@@ -17,7 +17,7 @@ export const setThemeStorage = (key: string, value: string): boolean => {
 	try {
 		localStorage.setItem(key, value);
 		return true;
-	} catch (e) {
+	} catch {
 		return false;
 	}
 };
@@ -71,10 +71,10 @@ export const disableAnimation = () => {
 	document.head.appendChild(css);
 
 	return () => {
-		// Force restyle
+		// Force to restyle
 		(() => window.getComputedStyle(document.body))();
 
-		// Wait for next tick before removing
+		// Wait for the next tick before removing
 		setTimeout(() => {
 			document.head.removeChild(css);
 		}, ANIMATION_DELAY_MS);
@@ -86,7 +86,5 @@ export const getSystemTheme = (e?: MediaQueryList): string => {
 		e = window.matchMedia(MEDIA);
 	}
 
-	const isDark = e.matches;
-	const systemTheme = isDark ? 'dark' : 'light';
-	return systemTheme;
+	return e.matches ? 'dark' : 'light';
 };

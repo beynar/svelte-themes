@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Browser detection - works in any Svelte environment
 	const browser = typeof window !== 'undefined';
-	import { colorSchemes, MEDIA } from './constants';
+	import { MEDIA } from './constants';
 	import { disableAnimation, getSystemTheme, getTheme, setThemeStorage, resolveTheme, getColorScheme, applyThemeToDOM } from './helpers';
 	import themeStore, { setTheme } from './index';
 
