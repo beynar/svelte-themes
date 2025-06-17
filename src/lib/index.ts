@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-// Export the main component
+// Export the main component for external consumption (library entry point)
 export { default as SvelteTheme } from './SvelteTheme.svelte';
 
 export interface ThemeStore {
