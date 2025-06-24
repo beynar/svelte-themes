@@ -16,8 +16,17 @@ export interface ThemeStore {
 	systemTheme?: 'dark' | 'light';
 }
 
-export const setTheme = (theme: string): void =>
-	themeStore.update((store) => ({ ...store, theme }));
+export const setTheme = (theme: string): void => {
+	themeStore.update((store) => {
+		// Runtime validation: throw error if theme is not in the configured themes list
+		if (store.themes.length > 0 && !store.themes.includes(theme)) {
+			throw new Error(
+				`svelte-themes: Invalid theme "${theme}". Currently loaded themes are: [${store.themes.join(', ')}]`
+			);
+		}
+		return { ...store, theme };
+	});
+};
 const themeStore = writable<ThemeStore>({
 	themes: [],
 	forcedTheme: undefined,

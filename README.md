@@ -62,7 +62,7 @@ In order to use svelte-themes you will need to add `SvelteTheme` inside your [`+
 Svelte-themes exports
 
 - a `theme` writable store as its default so you can access the theme props anywhere in you app
-- `setTheme` function so you can easily switch the theme.
+- `setTheme` function so you can easily switch the theme. Includes runtime validation to prevent invalid theme names.
 
 ```svelte
 <script>
