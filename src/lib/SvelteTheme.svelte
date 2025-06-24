@@ -48,7 +48,7 @@
 		theme: initialTheme,
 		forcedTheme,
 		resolvedTheme: initialTheme === 'system' ? getTheme(storageKey) : initialTheme,
-		themes: enableSystem ? [...themes, 'system'] : themes,
+		themes: themes,
 		systemTheme: (enableSystem ? getTheme(storageKey) : undefined) as 'light' | 'dark' | undefined
 	});
 
@@ -61,6 +61,7 @@
 	const handleMediaQuery = (e?: MediaQueryList | MediaQueryListEvent) => {
 		const systemTheme = getSystemTheme(e as MediaQueryList);
 		$themeStore.resolvedTheme = systemTheme;
+		$themeStore.systemTheme = systemTheme as 'dark' | 'light';
 
 		// Only apply system theme if no forcedTheme is present (matches next-themes)
 		if (theme === 'system' && enableSystem && !forcedTheme) {

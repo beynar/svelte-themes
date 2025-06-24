@@ -1,5 +1,10 @@
 <script>
 	import themeStore from '$lib/index';
+	
+	// Debug: Log store changes
+	$: {
+		console.log('Theme Store Changed:', JSON.stringify($themeStore, null, 2));
+	}
 </script>
 
 <div>
@@ -18,6 +23,14 @@
 	</div>
 
 	<br />
+	<br />
+	
+	<!-- Debug display -->
+	<div style="background: color-mix(in srgb, var(--bg) 90%, var(--fg) 10%); color: var(--fg); padding: 10px; margin: 10px 0; font-family: monospace; font-size: 12px; white-space: pre-wrap; border: 1px solid color-mix(in srgb, var(--bg) 70%, var(--fg) 30%); text-align: left;">
+		<strong>Debug - Theme Store:</strong><br />
+		{JSON.stringify($themeStore, null, 2)}
+	</div>
+	
 	<br />
 	<table style="margin: 0 auto; width: auto; table-layout: auto; color: #666;">
 		<tbody>
