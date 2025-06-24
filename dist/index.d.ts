@@ -1,3 +1,4 @@
+import type { Writable } from 'svelte/store';
 export { default as SvelteTheme } from './SvelteTheme.svelte';
 export interface ThemeStore {
     /** List of all available theme names */
@@ -12,5 +13,5 @@ export interface ThemeStore {
     systemTheme?: 'dark' | 'light';
 }
 export declare const setTheme: (theme: string) => void;
-declare const themeStore: import("svelte/store").Writable<ThemeStore>;
+declare const themeStore: Writable<ThemeStore>;
 export default themeStore;

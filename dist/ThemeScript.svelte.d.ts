@@ -1,17 +1,4 @@
-interface $$__sveltets_2_IsomorphicComponent<Props extends Record<string, any> = any, Events extends Record<string, any> = any, Slots extends Record<string, any> = any, Exports = {}, Bindings = string> {
-    new (options: import('svelte').ComponentConstructorOptions<Props>): import('svelte').SvelteComponent<Props, Events, Slots> & {
-        $$bindings?: Bindings;
-    } & Exports;
-    (internal: unknown, props: Props & {
-        $$events?: Events;
-        $$slots?: Slots;
-    }): Exports & {
-        $set?: any;
-        $on?: any;
-    };
-    z_$$bindings?: Bindings;
-}
-declare const ThemeScript: $$__sveltets_2_IsomorphicComponent<{
+interface Props {
     forcedTheme: string | undefined;
     storageKey: string;
     attribute: string;
@@ -21,8 +8,7 @@ declare const ThemeScript: $$__sveltets_2_IsomorphicComponent<{
         [themeName: string]: string;
     } | undefined;
     attrs: any;
-}, {
-    [evt: string]: CustomEvent<any>;
-}, {}, {}, string>;
-type ThemeScript = InstanceType<typeof ThemeScript>;
+}
+declare const ThemeScript: import("svelte").Component<Props, {}, "">;
+type ThemeScript = ReturnType<typeof ThemeScript>;
 export default ThemeScript;

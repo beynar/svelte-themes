@@ -1,11 +1,20 @@
 <script>
-	import themeStore from '../index';
+	import themeStore, { setTheme } from '../index';
+	
+	// Debug: Log store changes
+	$: {
+		console.log('Theme Store Changed:', JSON.stringify($themeStore, null, 2));
+	}
+	
+	function handleThemeChange(event) {
+		setTheme(event.target.value);
+	}
 </script>
 
 <div>
 	<h1>svelte-themes Example</h1>
-	<select bind:value={$themeStore.theme}>
-		<option value="system">System</option>
+	<select value={$themeStore.theme} on:change={handleThemeChange}>
+		<option value="auto">System</option>
 		<option value="dark">Dark</option>
 		<option value="light">Light</option>
 	</select>
@@ -18,6 +27,14 @@
 	</div>
 
 	<br />
+	<br />
+	
+	<!-- Debug display -->
+	<div style="background: color-mix(in srgb, var(--bg) 90%, var(--fg) 10%); color: var(--fg); padding: 10px; margin: 10px 0; font-family: monospace; font-size: 12px; white-space: pre-wrap; border: 1px solid color-mix(in srgb, var(--bg) 70%, var(--fg) 30%); text-align: left;">
+		<strong>Debug - Theme Store:</strong><br />
+		{JSON.stringify($themeStore, null, 2)}
+	</div>
+	
 	<br />
 	<table style="margin: 0 auto; width: auto; table-layout: auto; color: #666;">
 		<tbody>
