@@ -32,11 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- ColorScheme map to set color scheme based on theme.
+- ColorScheme map to set a custom color scheme based on theme.
 
 ### Thank you
 
-@aholland for the initial svelte 5 mmigration
+@aholland for the initial Svelte 5 migration
 
 ## [1.0.2] - 2025-06-24
 
