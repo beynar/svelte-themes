@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2025-08-31
 
-### Breaking
+### Removed
 
-- Remove themeStore: theme is accessed through the `useTheme` function
-- Use Svelte 5 runes.
+- `themeStore` (replaced by `useTheme()`).
+
+### Changed
+
+- Migrated to Svelte 5 runes ($state, $derived, $effect, $props()).
+
+### Migration
+
+- Replace `themeStore` usage with:
+  `const theme = useTheme(); // theme.theme, theme.themes, theme.setTheme(...)`
+
+### Example
 
 ```svelte
 <script lang="ts">
@@ -25,10 +35,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 </select>
 ```
 
-### Fixes
+### Fixed
 
-- Fixes a lot of bugs
-- Basic prevention of XSS attacks on script injection
+- Numerous defects addressed, including validation edge cases and theme sync behavior.
+
+### Security
+
+- Added escaping utilities for inline scripts to mitigate XSS vectors in theme bootstrapping (see helpers: escapeForInlineScript, escapeJsString).
 
 ### Added
 
