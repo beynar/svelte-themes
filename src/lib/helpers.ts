@@ -1,15 +1,4 @@
-import { MEDIA } from './constants';
-
-export const getTheme = (key: string, fallback?: string): string | undefined => {
-	if (typeof window === 'undefined') return undefined;
-	let theme;
-	try {
-		theme = localStorage.getItem(key) || undefined;
-	} catch (e) {
-		// Unsupported
-	}
-	return theme || fallback;
-};
+const ANIMATION_DELAY_MS = 1;
 
 export const disableAnimation = () => {
 	const css = document.createElement('style');
@@ -21,22 +10,26 @@ export const disableAnimation = () => {
 	document.head.appendChild(css);
 
 	return () => {
-		// Force restyle
+		// Force to restyle
 		(() => window.getComputedStyle(document.body))();
 
-		// Wait for next tick before removing
+		// Wait for the next tick before removing
 		setTimeout(() => {
 			document.head.removeChild(css);
-		}, 1);
+		}, ANIMATION_DELAY_MS);
 	};
 };
 
-export const getSystemTheme = (e?: MediaQueryList): string => {
-	if (!e) {
-		e = window.matchMedia(MEDIA);
-	}
-
-	const isDark = e.matches;
-	const systemTheme = isDark ? 'dark' : 'light';
-	return systemTheme;
-};
+export const escapeForInlineScript = (json: unknown) =>
+	JSON.stringify(json)
+		.replace(/</g, '\\u003C')
+		.replace(/>/g, '\\u003E')
+		.replace(/-->/g, '--\\>')
+		.replace(/\u2028/g, '\\u2028')
+		.replace(/\u2029/g, '\\u2029');
+export const escapeJsString = (s: string) =>
+	String(s)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "\\'")
+		.replace(/\u2028/g, '\\u2028')
+		.replace(/\u2029/g, '\\u2029');
