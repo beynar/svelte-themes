@@ -1,7 +1,6 @@
 <script lang="ts">
 	import SvelteTheme from '$lib/SvelteTheme.svelte';
-
-	let { data, children } = $props();
+	let { children } = $props();
 </script>
 
 <SvelteTheme forcedTheme={data?.forcedTheme}>

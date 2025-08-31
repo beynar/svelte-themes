@@ -1,20 +1,21 @@
-This library is a port of [next-theme](https://github.com/pacocoursey/next-themes/) for SvelteKit. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-themes contributors](https://github.com/pacocoursey/next-themes/graphs/contributors)
-
-While usable, this library is still in its early phase, PR are welcome.
+This library is a port of [next-themes](https://github.com/pacocoursey/next-themes/) for Svelte. All credit goes to [pacocoursey](https://github.com/pacocoursey) and all [next-themes contributors](https://github.com/pacocoursey/next-themes/graphs/contributors).
 
 # svelte-themes ![svelte-themes minzip package size](https://img.shields.io/bundlephobia/minzip/svelte-themes) ![Version](https://img.shields.io/npm/v/svelte-themes.svg?colorB=green)
 
-An abstraction for themes in your SvelteKit.js app.
+An abstraction for themes in your Svelte app - works with any Svelte environment (SvelteKit, Vite, Webpack, etc.)
 
 - ✅ Perfect dark mode in 2 lines of code
 - ✅ System setting with prefers-color-scheme
 - ✅ Themed browser UI with color-scheme
-- ✅ No flash on load
+- ✅ No FOUC (Flash of Unstyled Content)
 - ✅ Sync theme across tabs and windows
-- ✅ Disable flashing when changing themes
+- ✅ Disable transition flash when changing themes
 - ✅ Force pages to specific themes
 - ✅ Class or data attribute selector
-- ✅ Theme store
+- ✅ Theme context
+- ✅ **Svelte 5 ready** with modern runes syntax
+- ✅ **Universal** - works with any Svelte setup
+- ✅ **Zero framework lock-in** - no SvelteKit dependency
 
 Check out the [Live Example](https://svelte-themes.vercel.app) to try it for yourself.
 
@@ -30,17 +31,20 @@ $ yarn add svelte-themes
 
 ## Using svelte-themes
 
-In order to use svelte-themes you will need to add `SvelteTheme` inside your [`+layout.svelte` component](https://kit.svelte.dev/docs/routing#layout).
+Add `SvelteTheme` to your app's root component. In SvelteKit, this would be your [`+layout.svelte`](https://kit.svelte.dev/docs/routing#layout).
 
 ```svelte
-<!-- src/routes/+layout.svelte -->
+<!-- src/routes/+layout.svelte (SvelteKit) -->
+<!-- or src/App.svelte (Vite + Svelte) -->
 
-<script>
+<script lang="ts">
 	import { SvelteTheme } from 'svelte-themes';
+	let { children } = $props();
 </script>
 
-<SvelteTheme />
-<slot />
+<SvelteTheme>
+	{@render children()}
+</SvelteTheme>
 ```
 
 ### Props
@@ -55,35 +59,88 @@ In order to use svelte-themes you will need to add `SvelteTheme` inside your [`+
 - `attribute = 'data-theme'`: HTML attribute modified based on the active theme
   - accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.)
 - `value`: Optional mapping of theme name to attribute value
-  - value is an `object` where key is the theme name and value is the attribute value
+  - Example: `{ dark: 'dark-theme', light: 'light-theme' }`
+- `colorScheme`: Optional mapping of theme name to color scheme value
+  - Example: `{ 'custom-dark': 'dark', 'custom-light': 'light' }`
 
 ## Reading and updating the theme
 
-Svelte-themes exports
+Use the `useTheme()` hook to access and change the active theme.
 
-- a `theme` writable store as its default so you can access the theme props anywhere in you app
-- `setTheme` function so you can easily switch the theme. Includes runtime validation to prevent invalid theme names.
+```svelte
+<script lang="ts">
+  import { useTheme } from 'svelte-themes';
+  const theme = useTheme();
+</script>
+
+<select bind:value={theme.theme}>
+  {#each theme.themes as name (name)}
+    <option value={name}>{name}</option>
+  {/each}
+</select>
+
+<button onclick={() => (theme.theme = 'dark')}>Dark mode</button>
+<button onclick={() => (theme.theme = 'light')}>Light mode</button>
+```
+
+### Theme state
+
+- `theme`: Active theme name
+- `resolvedTheme`: If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme`
+- `systemTheme`: If `enableSystem` is true, represents the System theme preference ("dark" or "light"), regardless what the active theme is
+- `themes`: The list of themes passed to `SvelteTheme` (with "system" appended, if `enableSystem` is true)
+
+## Examples
+
+### Basic dark/light mode
 
 ```svelte
 <script>
-import themeStore, { setTheme } from 'svelte-themes';
+  import { SvelteTheme } from 'svelte-themes';
+    let { children } = $props();
 </script>
 
-<select bind:value={$themeStore.theme}>
-	<option value="dark">Dark</option>
-	<option value="light">Light</option>
-	<option value="system">System</option>
-</select>
-
-<button on:click={() => setTheme('dark')}>Dark mode</button>
+<SvelteTheme>
+	{@render children()}
+</SvelteTheme>
 ```
 
-### Theme store
+### Custom theme names with value mapping
 
-- `theme`: Active theme name
-- `forcedTheme`: Forced page theme or falsy. If `forcedTheme` is set, you should disable any theme switching UI
-- `resolvedTheme`: If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme`
-- `systemTheme`: If `enableSystem` is true, represents the System theme preference ("dark" or "light"), regardless what the active theme is
-- `themes`: The list of themes passed to `ThemeProvider` (with "system" appended, if `enableSystem` is true)
+```svelte
+<script>
+  import { SvelteTheme } from 'svelte-themes';
+    let { children } = $props()
+</script>
 
-For the rest of the documentation please refer to the [next-themes repo](https://github.com/pacocoursey/next-themes).
+<SvelteTheme
+  themes={['corporate', 'neon', 'vintage']}
+  value={{
+    corporate: 'theme-corporate',
+    neon: 'theme-neon-bright',
+    vintage: 'theme-retro'
+  }}
+  attribute="class"
+>
+	{@render children()}
+</SvelteTheme>
+```
+
+### With color scheme mapping
+
+```svelte
+<script>
+  import { SvelteTheme } from 'svelte-themes';
+  let { children } = $props()
+</script>
+
+<SvelteTheme
+  themes={['light', 'dark', 'midnight', 'dawn']}
+  colorScheme={{
+    midnight: 'dark',  // Maps to CSS color-scheme: dark
+    dawn: 'light'      // Maps to CSS color-scheme: light
+  }}
+>
+  {@render children()}
+</SvelteTheme>
+```

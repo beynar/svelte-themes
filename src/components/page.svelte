@@ -6,7 +6,7 @@
 
 <div>
 	<h1>svelte-themes Example</h1>
-	<select bind:value={theme.current}>
+	<select bind:value={theme.theme}>
 		{#each theme.themes as themeName}
 			<option value={themeName}>{themeName}</option>
 		{/each}
@@ -40,10 +40,9 @@
 		<strong>Debug - Theme Store:</strong><br />
 		{JSON.stringify(
 			{
-				current: theme.current,
+				current: theme.theme,
 				themes: theme.themes,
 				systemTheme: theme.systemTheme,
-				colorScheme: theme.colorsScheme,
 				resolvedTheme: theme.resolvedTheme
 			},
 

@@ -2,6 +2,7 @@
 	import { MEDIA, colorSchemes } from './constants';
 	import { type SvelteThemeProps } from '.';
 	import { Theme } from './theme.state.svelte';
+	import { escapeForInlineScript, escapeJsString } from './helpers';
 
 	let {
 		forcedTheme = undefined,
@@ -70,30 +71,30 @@
 		}
 	});
 
-	const attrs = !value ? themes || [] : Object.values(value || {});
+	const attrs = !value ? themes || [] : (Object.values(value || {}) as string[]);
 	// Encapsulate script tag into string so as not to mess with the compiler
 	let themeScript = `<script>
 		function svelteTheme(){		
 		var d=document.documentElement;
-		var x=${JSON.stringify(value || {})};
-		var y=${JSON.stringify(colorScheme || {})};
-		var validThemes=${JSON.stringify(theme.themes)};		
-		var localStorageTheme; try { localStorageTheme = localStorage.getItem('${storageKey}'); } catch(e) { localStorageTheme = null; }
+		var x=${escapeForInlineScript(value || {})};
+		var y=${escapeForInlineScript(colorScheme || {})};
+		var validThemes=${escapeForInlineScript(theme.themes)};		
+		var localStorageTheme; try { localStorageTheme = localStorage.getItem('${escapeJsString(storageKey)}'); } catch(e) { localStorageTheme = null; }
 		var systemTheme = ${enableSystem ? `window.matchMedia('${MEDIA}').matches ? 'dark' : 'light'` : "'normal'"};
 		var isValidTheme = validThemes.indexOf(localStorageTheme) !== -1;	
 		var isSystemThemeButDisabled = localStorageTheme === 'system' && ${!enableSystem};
-		var currentTheme = isValidTheme ? localStorageTheme : '${validatedDefaultTheme}';
+		var currentTheme = isValidTheme ? localStorageTheme : '${escapeJsString(validatedDefaultTheme)}';
 		if (isSystemThemeButDisabled) {
-			currentTheme = '${validatedDefaultTheme}';
-			try { localStorage.setItem('${storageKey}', currentTheme); } catch(e) {}
+			currentTheme = '${escapeJsString(validatedDefaultTheme)}';
+			try { localStorage.setItem('${escapeJsString(storageKey)}', currentTheme); } catch(e) {}
 		}		
 		var isSystemTheme = ${enableSystem ? "currentTheme === 'system'" : 'false'};
-		var resolvedTheme = ${forcedTheme ? `'${forcedTheme}'` : `isSystemTheme ? systemTheme : currentTheme`};				
+		var resolvedTheme = ${forcedTheme ? `'${escapeJsString(forcedTheme)}'` : `isSystemTheme ? systemTheme : currentTheme`};				
 		var colorSchemeMode = y[resolvedTheme] || (resolvedTheme === 'light' || resolvedTheme === 'dark' ? resolvedTheme : 'normal');
 		var val = x[resolvedTheme] || resolvedTheme;
 		${enableColorScheme ? `d.style.setProperty('color-scheme', colorSchemeMode);` : ''}
-		${attribute === 'class' ? `d.classList.remove(${attrs.map((t) => `'${t}'`).join(',')})` : ''};
-		${attribute === 'class' ? `d.classList.add(val);` : `d.setAttribute('${attribute}', val);`};
+		${attribute === 'class' ? `d.classList.remove(${attrs.map((t) => `'${escapeJsString(t)}'`).join(',')})` : ''};
+		${attribute === 'class' ? `d.classList.add(val);` : `d.setAttribute('${escapeJsString(attribute)}', val);`};
 		};svelteTheme();
 		</${'script'}>`;
 </script>

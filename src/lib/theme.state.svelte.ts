@@ -29,7 +29,7 @@ interface ThemeOptions
 }
 export class Theme {
 	#theme = $state<string | undefined>();
-	colorsScheme = new MediaQuery(MEDIA);
+	private colorsScheme = new MediaQuery(MEDIA);
 	systemTheme = $derived<'dark' | 'light'>(this.colorsScheme.current ? 'dark' : 'light');
 
 	constructor(private options: ThemeOptions) {
@@ -95,11 +95,15 @@ export class Theme {
 	}
 
 	private setColorScheme() {
+		if (!this.options.enableColorScheme) {
+			document.documentElement.style.removeProperty('color-scheme');
+			return;
+		}
 		if (this.options.enableColorScheme && browser && this.resolvedTheme) {
 			const colorScheme: ColorScheme | undefined =
 				this.options.colorScheme?.[this.resolvedTheme] ||
 				colorSchemes.find((c) => c === this.resolvedTheme) ||
-				(this.current === 'system' && this.systemTheme ? this.systemTheme : undefined);
+				(this.theme === 'system' && this.systemTheme ? this.systemTheme : undefined);
 			const root = document.documentElement.style;
 
 			if (colorScheme) {
@@ -144,8 +148,19 @@ export class Theme {
 		}
 	}
 
-	get current(): string {
+	get theme(): string {
 		return this.#theme as string;
+	}
+	set theme(theme: string | undefined) {
+		if (this.options.forcedTheme) {
+			// Theme is forced, we shouldn't allow user to change the theme
+			return;
+		}
+		if (theme) {
+			this.validateTheme(theme);
+			this.#theme = theme;
+			this.setThemeStorage(theme);
+		}
 	}
 	get themes(): string[] {
 		return this.options.themes;
@@ -160,17 +175,6 @@ export class Theme {
 		}
 		return this.#theme as string;
 	});
-	set current(theme: string | undefined) {
-		if (this.options.forcedTheme) {
-			// Theme is forced, we shouldn't allow user to change the theme
-			return;
-		}
-		if (theme) {
-			this.validateTheme(theme);
-			this.#theme = theme;
-			this.setThemeStorage(theme);
-		}
-	}
 }
 
 export const useTheme = () => {

@@ -19,3 +19,17 @@ export const disableAnimation = () => {
 		}, ANIMATION_DELAY_MS);
 	};
 };
+
+export const escapeForInlineScript = (json: unknown) =>
+	JSON.stringify(json)
+		.replace(/</g, '\\u003C')
+		.replace(/>/g, '\\u003E')
+		.replace(/-->/g, '--\\>')
+		.replace(/\u2028/g, '\\u2028')
+		.replace(/\u2029/g, '\\u2029');
+export const escapeJsString = (s: string) =>
+	String(s)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "\\'")
+		.replace(/\u2028/g, '\\u2028')
+		.replace(/\u2029/g, '\\u2029');
