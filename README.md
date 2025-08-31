@@ -15,7 +15,7 @@ An abstraction for themes in your Svelte app - works with any Svelte environment
 - ✅ Theme context
 - ✅ **Svelte 5 ready** with modern runes syntax
 - ✅ **Universal** - works with any Svelte setup
-- ✅ **Zero framework lock-in** - no SvelteKit dependency
+- ✅ SvelteKit dependency
 
 Check out the [Live Example](https://svelte-themes.vercel.app) to try it for yourself.
 
