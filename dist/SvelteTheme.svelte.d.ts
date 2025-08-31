@@ -1,25 +1,25 @@
-interface Props {
-    /** Forced theme name for the current page */
-    forcedTheme?: string;
-    /** Disable all CSS transitions when switching themes */
-    disableTransitionOnChange?: boolean;
-    /** Whether to switch between dark and light themes based on prefers-color-scheme */
-    enableSystem?: boolean;
-    /** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
-    enableColorScheme?: boolean;
-    /** Key used to store theme setting in localStorage */
-    storageKey?: string;
-    /** List of all available theme names */
-    themes?: string[];
-    /** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
-    defaultTheme?: string;
-    /** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
-    attribute?: string | 'class';
-    /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
-    value?: {
-        [themeName: string]: string;
-    };
+import { type SvelteThemeProps } from '.';
+declare function $$render<const T extends readonly string[]>(): {
+    props: SvelteThemeProps<T>;
+    exports: {};
+    bindings: "";
+    slots: {};
+    events: {};
+};
+declare class __sveltets_Render<const T extends readonly string[]> {
+    props(): ReturnType<typeof $$render<T>>['props'];
+    events(): ReturnType<typeof $$render<T>>['events'];
+    slots(): ReturnType<typeof $$render<T>>['slots'];
+    bindings(): "";
+    exports(): {};
 }
-declare const SvelteTheme: import("svelte").Component<Props, {}, "">;
-type SvelteTheme = ReturnType<typeof SvelteTheme>;
+interface $$IsomorphicComponent {
+    new <const T extends readonly string[]>(options: import('svelte').ComponentConstructorOptions<ReturnType<__sveltets_Render<T>['props']>>): import('svelte').SvelteComponent<ReturnType<__sveltets_Render<T>['props']>, ReturnType<__sveltets_Render<T>['events']>, ReturnType<__sveltets_Render<T>['slots']>> & {
+        $$bindings?: ReturnType<__sveltets_Render<T>['bindings']>;
+    } & ReturnType<__sveltets_Render<T>['exports']>;
+    <const T extends readonly string[]>(internal: unknown, props: ReturnType<__sveltets_Render<T>['props']> & {}): ReturnType<__sveltets_Render<T>['exports']>;
+    z_$$bindings?: ReturnType<__sveltets_Render<any>['bindings']>;
+}
+declare const SvelteTheme: $$IsomorphicComponent;
+type SvelteTheme<const T extends readonly string[]> = InstanceType<typeof SvelteTheme<T>>;
 export default SvelteTheme;

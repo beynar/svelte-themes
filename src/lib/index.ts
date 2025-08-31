@@ -1,8 +1,33 @@
-import { writable } from 'svelte/store';
-import type { Writable } from 'svelte/store';
+import { type Snippet } from 'svelte';
+import type { Theme } from './theme.state.svelte';
+import type { ColorScheme } from './constants';
 
+export type SvelteThemeProps<T extends readonly string[]> = {
+	/** Forced theme name for the current page */
+	forcedTheme?: string;
+	/** Disable all CSS transitions when switching themes */
+	disableTransitionOnChange?: boolean;
+	/** Whether to switch between dark and light themes based on prefers-color-scheme */
+	enableSystem?: boolean;
+	/** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
+	enableColorScheme?: boolean;
+	/** Key used to store theme setting in localStorage */
+	storageKey?: string;
+	/** List of all available theme names */
+	themes?: T;
+	/** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
+	defaultTheme?: T[number];
+	/** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
+	attribute?: (string & {}) | 'class';
+	/** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
+	value?: Partial<Record<T[number], string>>;
+	/** Mapping of theme name to color scheme. Object where key is the theme name and value is the color scheme */
+	colorScheme?: Partial<Record<T[number], ColorScheme>>;
+	children?: Snippet<[Theme]>;
+};
 // Export the main component for external consumption (library entry point)
 export { default as SvelteTheme } from './SvelteTheme.svelte';
+export { useTheme } from './theme.state.svelte';
 
 export interface ThemeStore {
 	/** List of all available theme names */
@@ -16,49 +41,3 @@ export interface ThemeStore {
 	/** If enableSystem is true, returns the System theme preference ("dark" or "light"), regardless what the active theme is */
 	systemTheme?: 'dark' | 'light';
 }
-
-function createThemeStore(): Writable<ThemeStore> {
-	const { subscribe, set, update } = writable<ThemeStore>({
-		themes: [],
-		forcedTheme: undefined,
-		theme: undefined,
-		resolvedTheme: undefined,
-		systemTheme: undefined
-	});
-
-	function validateTheme(store: ThemeStore, newTheme: string | undefined) {
-		// Skip validation if themes array is empty (during initialization)
-		// or if newTheme is undefined
-		if (!newTheme || store.themes.length === 0) {
-			return;
-		}
-		
-		if (!store.themes.includes(newTheme)) {
-			throw new Error(
-				`svelte-themes: Invalid theme "${newTheme}". Currently loaded themes are: [${store.themes.join(', ')}]`
-			);
-		}
-	}
-
-	return {
-		subscribe,
-		set: (value: ThemeStore) => {
-			validateTheme(value, value.theme);
-			set(value);
-		},
-		update: (fn: (value: ThemeStore) => ThemeStore) => {
-			update((currentValue) => {
-				const newValue = fn(currentValue);
-				validateTheme(currentValue, newValue.theme);
-				return newValue;
-			});
-		}
-	};
-}
-
-export const setTheme = (theme: string): void => {
-	themeStore.update((store) => ({ ...store, theme }));
-};
-
-const themeStore = createThemeStore();
-export default themeStore;

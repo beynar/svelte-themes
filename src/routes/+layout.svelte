@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import SvelteTheme from '$lib/SvelteTheme.svelte';
-	
-	export let data;
-	$: forcedTheme = data?.forcedTheme;
+
+	let { data, children } = $props();
 </script>
 
-<SvelteTheme {forcedTheme} />
-<slot />
+<SvelteTheme forcedTheme={data?.forcedTheme}>
+	{@render children()}
+</SvelteTheme>

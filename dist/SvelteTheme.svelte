@@ -1,34 +1,7 @@
-<script lang="ts">
-	// Browser detection - works in any Svelte environment
-	const browser = typeof window !== 'undefined';
-	import { MEDIA } from './constants';
-	import { disableAnimation, getSystemTheme, getTheme, setThemeStorage, resolveTheme, getColorScheme, applyThemeToDOM } from './helpers';
-	import themeStore, { setTheme } from './index';
-
-	import ThemeScript from './ThemeScript.svelte';
-
-	interface Props {
-		/** Forced theme name for the current page */
-		forcedTheme?: string;
-		/** Disable all CSS transitions when switching themes */
-		disableTransitionOnChange?: boolean;
-		/** Whether to switch between dark and light themes based on prefers-color-scheme */
-		enableSystem?: boolean;
-		/** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
-		enableColorScheme?: boolean;
-		/** Key used to store theme setting in localStorage */
-		storageKey?: string;
-		/** List of all available theme names */
-		themes?: string[];
-		/** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
-		defaultTheme?: string;
-		/** HTML attribute modified based on the active theme. Accepts `class` and `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.) */
-		attribute?: string | 'class';
-		/** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
-		value?: {
-			[themeName: string]: string;
-		};
-	}
+<script lang="ts" generics="const T extends readonly string[]">
+	import { MEDIA, colorSchemes } from './constants';
+	import { type SvelteThemeProps } from '.';
+	import { Theme } from './theme.state.svelte';
 
 	let {
 		forcedTheme = undefined,
@@ -36,99 +9,96 @@
 		enableSystem = true,
 		enableColorScheme = true,
 		storageKey = 'theme',
-		themes = enableSystem ? ['light', 'dark', 'system'] : ['light', 'dark'],
+		themes,
 		defaultTheme = enableSystem ? 'system' : 'light',
 		attribute = 'data-theme',
-		value = undefined
-	}: Props = $props();
+		value = undefined,
+		colorScheme,
+		children
+	}: SvelteThemeProps<T> = $props();
 
-	const initialTheme = getTheme(storageKey, defaultTheme);
+	// Validate defaultTheme is in themes array
+	const validatedDefaultTheme = (() => {
+		const defaultThemes = ['light', 'dark'];
+		const currentThemes = (themes && themes.length > 0 ? themes : defaultThemes) as string[];
+		const finalThemes =
+			enableSystem && !currentThemes.includes('system')
+				? currentThemes.concat('system')
+				: currentThemes;
 
-	themeStore.set({
-		theme: initialTheme,
-		forcedTheme,
-		resolvedTheme: initialTheme === 'system' ? getTheme(storageKey) : initialTheme,
-		themes: themes,
-		systemTheme: (enableSystem ? getTheme(storageKey) : undefined) as 'light' | 'dark' | undefined
-	});
+		// If defaultTheme is not in the themes array, fall back to first theme
+		return finalThemes.includes(defaultTheme) ? defaultTheme : finalThemes[0];
+	})();
 
-	// Modern Svelte 5 derived values
-	let theme = $derived($themeStore.theme);
-	let resolvedTheme = $derived($themeStore.resolvedTheme);
-
-	const attrs = !value ? themes : Object.values(value);
-
-	const handleMediaQuery = (e?: MediaQueryList | MediaQueryListEvent) => {
-		const systemTheme = getSystemTheme(e as MediaQueryList);
-		$themeStore.resolvedTheme = systemTheme;
-		$themeStore.systemTheme = systemTheme as 'dark' | 'light';
-
-		// Only apply system theme if no forcedTheme is present (matches next-themes)
-		if (theme === 'system' && enableSystem && !forcedTheme) {
-			changeTheme(systemTheme, false);
-		}
-	};
-
-	const changeTheme = (theme: string, updateStorage = true, updateDOM = true) => {
-		const enable = disableTransitionOnChange && updateDOM ? disableAnimation() : null;
-
-		if (updateStorage) {
-			setThemeStorage(storageKey, theme);
-		}
-
-		const name = resolveTheme(theme, value);
-
-		if (updateDOM && browser) {
-			applyThemeToDOM(document.documentElement, attribute, name, attrs as string[]);
-			enable?.();
-		}
-	};
-
-
-	const storageHandler = (e: StorageEvent) => {
-		if (e.key !== storageKey) return;
-		// If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-		setTheme(e.newValue || defaultTheme);
-	};
-
-	const onWindow = (window: Window) => {
-		// Always listen to System preference
-		const media = window.matchMedia(MEDIA);
-		// Intentionally use deprecated listener methods to support iOS & old browsers
-		media.addListener(handleMediaQuery);
-		handleMediaQuery(media);
-		// localStorage event handling
-		window.addEventListener('storage', storageHandler);
-		return {
-			destroy() {
-				window.removeEventListener('storage', storageHandler);
-				media.removeListener(handleMediaQuery);
+	const theme = new Theme({
+		get forcedTheme() {
+			return forcedTheme;
+		},
+		get themes() {
+			const defaultThemes = ['light', 'dark'];
+			const currentThemes = (themes && themes.length > 0 ? themes : defaultThemes) as string[];
+			if (enableSystem && !currentThemes.includes('system')) {
+				return currentThemes.concat('system');
 			}
-		};
-	};
+			return currentThemes;
+		},
+		get enableSystem() {
+			return enableSystem;
+		},
 
-	// color-scheme handling with modern effect
-	$effect(() => {
-		if (enableColorScheme && browser) {
-			const colorScheme = getColorScheme(theme, resolvedTheme, forcedTheme);
-			// color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
-			// if color-scheme is null, this will remove the property
-			document.documentElement.style.setProperty('color-scheme', colorScheme);
+		get enableColorScheme() {
+			return enableColorScheme;
+		},
+		get colorScheme() {
+			return colorScheme;
+		},
+
+		get defaultTheme() {
+			return validatedDefaultTheme;
+		},
+		get attribute() {
+			return attribute;
+		},
+		get value() {
+			return value;
+		},
+		get storageKey() {
+			return storageKey;
+		},
+		get disableTransitionOnChange() {
+			return disableTransitionOnChange;
 		}
 	});
 
-	// Theme application with modern effect
-	$effect(() => {
-		// Apply forcedTheme if present, otherwise use the normal theme
-		// This matches next-themes: applyTheme(forcedTheme ?? theme)
-		const themeToApply = forcedTheme || theme;
-		if (themeToApply) {
-			const updateStorage = !forcedTheme; // Don't save forced themes to localStorage
-			changeTheme(themeToApply, updateStorage, true);
-		}
-	});
+	const attrs = !value ? themes || [] : Object.values(value || {});
+	// Encapsulate script tag into string so as not to mess with the compiler
+	let themeScript = `<script>
+		function svelteTheme(){		
+		var d=document.documentElement;
+		var x=${JSON.stringify(value || {})};
+		var y=${JSON.stringify(colorScheme || {})};
+		var validThemes=${JSON.stringify(theme.themes)};		
+		var localStorageTheme; try { localStorageTheme = localStorage.getItem('${storageKey}'); } catch(e) { localStorageTheme = null; }
+		var systemTheme = ${enableSystem ? `window.matchMedia('${MEDIA}').matches ? 'dark' : 'light'` : "'normal'"};
+		var isValidTheme = validThemes.indexOf(localStorageTheme) !== -1;	
+		var isSystemThemeButDisabled = localStorageTheme === 'system' && ${!enableSystem};
+		var currentTheme = isValidTheme ? localStorageTheme : '${validatedDefaultTheme}';
+		if (isSystemThemeButDisabled) {
+			currentTheme = '${validatedDefaultTheme}';
+			try { localStorage.setItem('${storageKey}', currentTheme); } catch(e) {}
+		}		
+		var isSystemTheme = ${enableSystem ? "currentTheme === 'system'" : 'false'};
+		var resolvedTheme = ${forcedTheme ? `'${forcedTheme}'` : `isSystemTheme ? systemTheme : currentTheme`};				
+		var colorSchemeMode = y[resolvedTheme] || (resolvedTheme === 'light' || resolvedTheme === 'dark' ? resolvedTheme : 'normal');
+		var val = x[resolvedTheme] || resolvedTheme;
+		${enableColorScheme ? `d.style.setProperty('color-scheme', colorSchemeMode);` : ''}
+		${attribute === 'class' ? `d.classList.remove(${attrs.map((t) => `'${t}'`).join(',')})` : ''};
+		${attribute === 'class' ? `d.classList.add(val);` : `d.setAttribute('${attribute}', val);`};
+		};svelteTheme();
+		</${'script'}>`;
 </script>
 
-<ThemeScript {forcedTheme} {storageKey} {attribute} {enableSystem} {defaultTheme} {value} {attrs} />
-
-<svelte:window use:onWindow />
+<svelte:head>
+	{@html themeScript}
+</svelte:head>
+{@render children?.(theme)}
