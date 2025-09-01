@@ -9,24 +9,23 @@ import { colorSchemes, MEDIA, type ColorScheme } from './constants';
 import { MediaQuery } from 'svelte/reactivity';
 import { on } from 'svelte/events';
 
-interface ThemeOptions
-	extends Pick<
-		SvelteThemeProps<any[]>,
-		| 'attribute'
-		| 'forcedTheme'
-		| 'enableSystem'
-		| 'enableColorScheme'
-		| 'value'
-		| 'themes'
-		| 'storageKey'
-		| 'colorScheme'
-		| 'disableTransitionOnChange'
-	> {
+export type ThemeOptions = Pick<
+	SvelteThemeProps<any[]>,
+	| 'attribute'
+	| 'forcedTheme'
+	| 'enableSystem'
+	| 'enableColorScheme'
+	| 'value'
+	| 'themes'
+	| 'storageKey'
+	| 'colorScheme'
+	| 'disableTransitionOnChange'
+> & {
 	// making them required
 	themes: string[];
 	defaultTheme: string;
 	storageKey: string;
-}
+};
 export class Theme {
 	#theme = $state<string | undefined>();
 	private colorsScheme = new MediaQuery(MEDIA);
