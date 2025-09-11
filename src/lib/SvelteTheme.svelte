@@ -1,5 +1,5 @@
 <script lang="ts" generics="const T extends readonly string[]">
-	import { MEDIA, colorSchemes } from './constants';
+	import { MEDIA } from './constants';
 	import { type SvelteThemeProps } from '.';
 	import { Theme } from './theme.state.svelte';
 	import { escapeForInlineScript, escapeJsString } from './helpers';

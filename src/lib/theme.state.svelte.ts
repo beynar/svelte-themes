@@ -2,30 +2,13 @@
 // If we pass getter/setter as options, they will be reflect on the class.
 
 import { getContext, onMount, setContext, untrack } from 'svelte';
-import { type SvelteThemeProps } from '.';
+import { type SvelteThemeProps, type ThemeOptions } from './types';
 import { disableAnimation } from './helpers';
 const browser = typeof window !== 'undefined';
 import { colorSchemes, MEDIA, type ColorScheme } from './constants';
 import { MediaQuery } from 'svelte/reactivity';
 import { on } from 'svelte/events';
 
-export type ThemeOptions = Pick<
-	SvelteThemeProps<any[]>,
-	| 'attribute'
-	| 'forcedTheme'
-	| 'enableSystem'
-	| 'enableColorScheme'
-	| 'value'
-	| 'themes'
-	| 'storageKey'
-	| 'colorScheme'
-	| 'disableTransitionOnChange'
-> & {
-	// making them required
-	themes: string[];
-	defaultTheme: string;
-	storageKey: string;
-};
 export class Theme {
 	#theme = $state<string | undefined>();
 	private colorsScheme = new MediaQuery(MEDIA);

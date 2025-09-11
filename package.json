@@ -1,6 +1,6 @@
 {
 	"name": "svelte-themes",
-	"version": "2.0.8",
+	"version": "2.0.9",
 	"description": "An abstraction for themes in your Svelte app - port of next-themes for Svelte",
 	"keywords": [
 		"svelte",
